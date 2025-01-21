@@ -1,0 +1,14 @@
+{
+    "editor.formatOnSave": true,
+    "files.autoSave": "onFocusChange",
+    "javascript.suggest.autoImports": true,
+    "emmet.includeLanguages": {
+      "javascript": "javascript"
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.bracketPairColorization.enabled": true,
+    "javascript.inlayHints.parameterNames.enabled": "all",
+    "emmet.triggerExpansionOnTab": true,
+    "editor.autoClosingBrackets": "always",
+    "editor.autoClosingQuotes": "always"
+}
