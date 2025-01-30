@@ -1,1 +1,6 @@
 .env
+node_modules
+src/logs
+yarn.lock
+firebaseConfig.json
+package-json.json
