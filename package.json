@@ -4,14 +4,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "node --watch --env-file=.env src/server.js"
+    "dev": "node --watch --env-file=.env src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "express": "^4.21.2",
+    "lodash": "^4.17.21",
     "morgan": "^1.10.0",
     "pg": "^8.13.1"
   }
