@@ -71,7 +71,16 @@ class AuthService{
         if(!user){
             throw new Error("Account not exist");
         }
-        console.log("AuthService -> login -> user",user);
+        console.log("AuthService -> login -> user", user);
+        //B5: Check compare password
+        const comparePassword = await PasswordUtils.compare({
+            password,
+            hash: user.password_hash
+        });
+
+        if(!comparePassword){
+            throw new Error("Password is incorrect");
+        }
 
         return {
             message:"Login successfully",
