@@ -8,7 +8,7 @@ class UserModel {
             const {rows} = await pgDatabase.query(query,values);
             return rows[0];
         } catch (error){
-            throw Logger.logError(error);
+            console.log("UserModel -> create ->error",error);
         }
     }
     async getUser({id}){

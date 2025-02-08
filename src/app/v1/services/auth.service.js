@@ -29,8 +29,15 @@ class AuthService{
         const hashPassword = PasswordUtils.hash({password});
 
         console.log("hash",hashPassword);
-        
+
+        //B6: Save account to database
+        const newUser = await UserModel.create({email,password:hashPassword});
+
         return {
+            user:{
+                userId : newUser.id,
+                email: newUser.email,
+            },
             message: "User registered successfully",
         }
     }
