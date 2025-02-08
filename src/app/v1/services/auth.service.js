@@ -1,8 +1,10 @@
+const authConstants = require("../../share/constants/auth.constants");
 const PasswordUtils = require("../../share/utils/password.util");
 const AuthValidate = require("../../share/validates/auth.validate");
 const UserModel = require("../models/user.model");
 
 class AuthService{
+    // A. Complete register
     async register(body){
         //B1. Get data from body
         const {email,password} = body;
@@ -17,7 +19,7 @@ class AuthService{
             throw new Error("Invalid email");
         }
         //B3. Check email exist or not exist
-        const user= await UserModel.findOneByEmail(email);
+        const user= await UserModel.findOneByEmail({email});
        
         //B4:
         //If account exist
@@ -41,6 +43,41 @@ class AuthService{
             message: "User registered successfully",
         }
     }
+    //B.Complete login
+    async login(body){
+        //B1: Get data form body
+        const {identify, password}= body;
+        //B2: Check type login
+        const checkTypeLogin = AuthValidate.checkTypeLogin(identify);
+        console.log("AuthService -> login -> checkTypeLogin", checkTypeLogin);
+        
+        //B3:Check validate
+        let user;
+        if(checkTypeLogin === authConstants.LoginType.Email){
+            const checkEmail = AuthValidate.isEmailValid(identify);
+            if(!checkEmail){
+                throw new Error("Invalid email");
+            }
+        //B4: Check email exist or not exist
+            user = await UserModel.findOneByEmail({email:identify});
+        } else if(checkTypeLogin === authConstants.LoginType.Username){
+            const checkUsername = AuthValidate.isUsernameValid(identify);
+            if(checkUsername){
+                throw new Error("Invalid username");
+            }
+        //B4. Check email exist or not exist
+            user = await UserModel.findOneByUsername({username:identify});
+        }
+        if(!user){
+            throw new Error("Account not exist");
+        }
+        console.log("AuthService -> login -> user",user);
+
+        return {
+            message:"Login successfully",
+        };
+    }
+
 }
 
 module.exports = new AuthService();
