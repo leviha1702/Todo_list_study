@@ -1,5 +1,6 @@
 const authConstants = require("../../share/constants/auth.constants");
 const PasswordUtils = require("../../share/utils/password.util");
+const TokenUtil = require("../../share/utils/token.util");
 const AuthValidate = require("../../share/validates/auth.validate");
 const UserModel = require("../models/user.model");
 
@@ -68,6 +69,7 @@ class AuthService{
         //B4. Check email exist or not exist
             user = await UserModel.findOneByUsername({username:identify});
         }
+        //If account not exist
         if(!user){
             throw new Error("Account not exist");
         }
@@ -77,16 +79,42 @@ class AuthService{
             password,
             hash: user.password_hash
         });
-
+        
+        //If user enter password incorrect
         if(!comparePassword){
             throw new Error("Password is incorrect");
         }
 
+        //If user enter password correct
+        //B6: create token
+        const accessToken = TokenUtil.generateAccessToken({
+            payload:{
+                userId: user.id,
+                email: user.email,
+            },
+            secret: process.env.JWT_SECRET,
+        });
+
+        const RefreshToken = TokenUtil.generateRefreshToken({
+            payload:{
+                userId: user.id,
+                email: user.email,
+            },
+            secret: process.env.JWT_SECRET,
+        });
+        
+        res.cookie(authConstants,KeyCookie.RefreshToken, refreshToken,{
+            httpOnly:true,
+            secure: true,
+            sameSite:"none",
+        });
+        
         return {
             message:"Login successfully",
+            accessToken:accessToken,
+            RefreshToken:RefreshToken, 
         };
     }
-
 }
 
 module.exports = new AuthService();

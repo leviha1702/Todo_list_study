@@ -1,6 +1,5 @@
 const _ = require("lodash");
 const authConstants = require("../constants/auth.constants");
-const AuthConstants = require("../constants/auth.constants");
 
 class AuthValidate {
     static isEmailValid(email){
