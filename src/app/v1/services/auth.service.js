@@ -45,7 +45,7 @@ class AuthService{
         }
     }
     //B.Complete login
-    async login(body){
+    async login(body,res){
         //B1: Get data form body
         const {identify, password}= body;
         //B2: Check type login
@@ -95,7 +95,7 @@ class AuthService{
             secret: process.env.JWT_SECRET,
         });
 
-        const RefreshToken = TokenUtil.generateRefreshToken({
+        const refreshToken = TokenUtil.generateRefreshToken({
             payload:{
                 userId: user.id,
                 email: user.email,
@@ -103,7 +103,7 @@ class AuthService{
             secret: process.env.JWT_SECRET,
         });
         
-        res.cookie(authConstants,KeyCookie.RefreshToken, refreshToken,{
+        res.cookie(authConstants.KeyCookie.RefreshToken, refreshToken, {
             httpOnly:true,
             secure: true,
             sameSite:"none",
@@ -112,8 +112,14 @@ class AuthService{
         return {
             message:"Login successfully",
             accessToken:accessToken,
-            RefreshToken:RefreshToken, 
         };
+    }
+    //C.Logout
+    async logout(res){
+        res.clearCookie(authConstants.KeyCookie.RefreshToken);
+        return{
+            message:"Logout successfully",
+        }
     }
 }
 
