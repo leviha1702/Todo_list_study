@@ -1,4 +1,5 @@
 const authConstants = require("../../share/constants/auth.constants");
+const emailUtil = require("../../share/utils/email.util");
 const PasswordUtils = require("../../share/utils/password.util");
 const TokenUtil = require("../../share/utils/token.util");
 const AuthValidate = require("../../share/validates/auth.validate");
@@ -120,6 +121,19 @@ class AuthService{
         return{
             message:"Logout successfully",
         }
+    }
+    //D.Forget
+    forgotPassword(){
+        const emailOptions = {
+            to: "classfullstack41@gmail.com",
+            subject:"Test Subject",
+            text:"Test text",
+            html:"<P>Test HTML</P>",
+        };
+        emailUtil.sendEmail(emailOptions);
+        return {
+            message:"Forgot password",
+        };
     }
 }
 

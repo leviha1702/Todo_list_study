@@ -1,3 +1,5 @@
+const nodemailer = require("nodemailer");
+
 class EmailUtil{
     constructor() {
         this.transport= nodemailer.createTransport({
@@ -10,9 +12,9 @@ class EmailUtil{
             },
         });
     }
-    static async sendEmail({to,subject,text,html}){
+    async sendEmail({to,subject,text,html}){
         const emailOptions ={
-            from:process.env.EMAIL_USER,
+            from: process.env.EMAIL_USER,
             to,
             subject,
             text,
@@ -22,10 +24,10 @@ class EmailUtil{
             const info = await this.transport.sendMail(emailOptions); 
             console.log("Email sent:%s",info.messageId);
         } catch(error){
-            console.log.error("Error sending email:",error);
+            console.error("Error sending email:",error);
             throw error;
         }
     }
 }
 
-module.exports = EmailUtil;
+module.exports = new EmailUtil();
