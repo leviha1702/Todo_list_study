@@ -40,6 +40,16 @@ class UserModel {
             throw error; 
         }
     }
+    async updatePassword({id,email}){
+        try{
+            const query = "UPDATE users SET password_hash = $1 WHERE id = $2";
+            const values = [password,id];
+            await pgDatabase.query(query,values);
+        } catch (error){
+            console.log("UserModel -> updatePassword -> error",error);
+            throw error;
+        }
+    }
 }
 
 module.exports = new UserModel();

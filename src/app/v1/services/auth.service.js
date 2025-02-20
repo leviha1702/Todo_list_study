@@ -1,5 +1,5 @@
 const authConstants = require("../../share/constants/auth.constants");
-const emailUtil = require("../../share/utils/email.util");
+const EmailUtil = require("../../share/utils/email.util");
 const PasswordUtils = require("../../share/utils/password.util");
 const TokenUtil = require("../../share/utils/token.util");
 const AuthValidate = require("../../share/validates/auth.validate");
@@ -123,14 +123,33 @@ class AuthService{
         }
     }
     //D.Forget
-    forgotPassword(){
-        const emailOptions = {
-            to: "classfullstack41@gmail.com",
-            subject:"Test Subject",
-            text:"Test text",
-            html:"<P>Test HTML</P>",
-        };
-        emailUtil.sendEmail(emailOptions);
+    async forgotPassword(body){
+        //B1: Get data from body
+        const {email} = body;
+        //B2: Check validate email
+        const checkEmail = AuthValidate.isEmailValid(email);
+        //If email invalid error
+        if(!checkEmail){
+            throw new Error("Invalid email");
+        }
+        //B3: Check email exist or not exist
+        const user = UserModel.findOneByEmail({email});
+        //If email not exist
+        if(!user){
+            throw new Error("Email not exist");
+        }
+        //B4: Random password
+        const randomPassword = PasswordUtils.generateRandomPassword();
+        //B5: Hash password
+        const hashPassword = PasswordUtils.hash({password:newPassword});
+        //B6: Update new password to database
+        await UserModel.updatePassword({id:user.id,password:hashPassword});
+        //B7: Send email
+        await EmailUtil.sendEmail({
+            to:email,
+            subject:"Your new password",
+            html:`<p>Your new password is: ${randomPassword}</p>`,
+        });
         return {
             message:"Forgot password",
         };

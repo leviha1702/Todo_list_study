@@ -7,6 +7,9 @@ class PasswordUtils{
     static async compare ({password,hash}){
         return bcrypt.compare(password,hash);
     }
+    static generateRandomPassword(){
+        return Math.random().toString(36).slice(-8);
+    }
 }
 
 module.exports = PasswordUtils;
