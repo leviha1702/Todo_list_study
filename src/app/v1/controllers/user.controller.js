@@ -1,13 +1,10 @@
 const UserService = require("../services/user.service");
 
 class UserController{
-    async getUser(_,res){
+    async getUser(req,res){
         try{
-            const user= await UserService.getUser();
-            return res.status(200).json({
-                data:user,
-                message: "Successfully retrieved user.",
-            });
+            const result= await UserService.getUser(req.params);
+            return res.status(200).json(result);
         } catch (err){
             return res.status(500).send(err);
         }
