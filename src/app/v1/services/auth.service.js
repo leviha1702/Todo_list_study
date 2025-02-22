@@ -133,23 +133,25 @@ class AuthService{
             throw new Error("Invalid email");
         }
         //B3: Check email exist or not exist
-        const user = UserModel.findOneByEmail({email});
+        const user = await UserModel.findOneByEmail({email});
         //If email not exist
         if(!user){
             throw new Error("Email not exist");
         }
         //B4: Random password
-        const randomPassword = PasswordUtils.generateRandomPassword();
+        const newPassword = PasswordUtils.generateRandomPassword();
         //B5: Hash password
         const hashPassword = PasswordUtils.hash({password:newPassword});
         //B6: Update new password to database
-        await UserModel.updatePassword({id:user.id,password:hashPassword});
+        UserModel.updatePassword({id:user.id,password:hashPassword});
         //B7: Send email
-        await EmailUtil.sendEmail({
-            to:email,
-            subject:"Your new password",
-            html:`<p>Your new password is: ${randomPassword}</p>`,
+        EmailUtil.sendEmail({
+            to: email,
+            subject:"Reset password",
+            text:`Hello ${user.email},\n\n Your password has been reset. Your new password is:\n\n ${newPassword}\n\nPlease change your password after logging in.\n\nBest regards,\nClass02`,
+            html:`<p>Hello ${user.email},</p><p>Your password has been reset. Your new password is:</p><p><strong>${newPassword}</strong></p><p>Please change your password after logging in.</p>`,
         });
+        //B8: Return message
         return {
             message:"Forgot password",
         };

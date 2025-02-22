@@ -12,10 +12,11 @@ class EmailUtil{
             },
         });
     }
-    async sendEmail({ to, subject, html}){
+    async sendEmail({ to, subject,text, html}){
         const emailOptions ={
             from: process.env.EMAIL_USER,
             to,
+            text,
             subject,
             html,
         };
