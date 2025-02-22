@@ -1,20 +1,21 @@
 const nodemailer = require("nodemailer");
+const emailConfig = require("../configs/email.conf");
 
 class EmailUtil{
     constructor() {
         this.transport= nodemailer.createTransport({
-            host:process.env.EMAIL_HOST,
-            port:process.env.EMAIL_PORT,
-            secure:process.env.EMAIL_PORT,
+            host:emailConfig.Host,
+            port:emailConfig.Port,
+            secure:emailConfig.Secure,
             auth:{
-                user:process.env.EMAIL_USER,
-                pass:process.env.EMAIL_PASS,
+                user:emailConfig.User,
+                pass:emailConfig.Password,
             },
         });
     }
     async sendEmail({ to, subject,text, html}){
         const emailOptions ={
-            from: process.env.EMAIL_USER,
+            from: emailConfig.User,
             to,
             text,
             subject,

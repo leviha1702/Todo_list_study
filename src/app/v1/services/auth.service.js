@@ -1,3 +1,4 @@
+const tokenConfig = require("../../share/configs/token.conf");
 const authConstants = require("../../share/constants/auth.constants");
 const EmailUtil = require("../../share/utils/email.util");
 const PasswordUtils = require("../../share/utils/password.util");
@@ -93,7 +94,7 @@ class AuthService{
                 userId: user.id,
                 email: user.email,
             },
-            secret: process.env.JWT_SECRET,
+            secret: tokenConfig.AccessSecret,
         });
 
         const refreshToken = TokenUtil.generateRefreshToken({
@@ -101,7 +102,7 @@ class AuthService{
                 userId: user.id,
                 email: user.email,
             },
-            secret: process.env.JWT_SECRET,
+            secret: tokenConfig.RefreshSecret,
         });
         
         res.cookie(authConstants.KeyCookie.RefreshToken, refreshToken, {
