@@ -1,8 +1,8 @@
 const UserModel = require("../models/user.model");
 
 class UserService{
-    async getUser(params){
-        const {userId} = params;
+    async getUser(req){
+        const {userId} = req.infoUserByToken;
         const user = await UserModel.getUser({id: userId});
         return {
             user:user?user:[],

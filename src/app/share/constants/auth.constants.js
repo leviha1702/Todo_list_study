@@ -11,6 +11,11 @@ const authConstants = {
     KeyCookie:{
         RefreshToken:"auth_refresh_token",
     },
+
+    JwtMessage:{
+        TokenExpired:"TokenExpiredError",
+        TokenSignatureRerror:"JsonWebTokenError",
+    }
 };
 
 module.exports = authConstants;

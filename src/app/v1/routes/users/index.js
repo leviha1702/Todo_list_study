@@ -4,6 +4,6 @@ const AuthMiddleware = require("../../middlewares/auth.middleware");
 const router = express.Router();
 
 router.use(AuthMiddleware.checkToken);
-router.get("/:userId", UserController.getUser);
+router.get("/profile", UserController.getUser);
 
 module.exports = router;

@@ -32,7 +32,35 @@ class AuthMiddleware {
         req.infoUserByToken = infoUserByToken;
         next();
     } catch (error){
-        console.log(error);
+        switch(error.name){
+            case authConstants.JwtMessage.TokenExpired:
+                return res.status(401).json({
+                    message: "Token expired",
+                });
+            case authConstants.JwtMessage.TokenSignatureRerror:
+                return res.status(401).json({
+                    message: "Token signature error",
+                });
+            default:
+                return res.status(500).json({
+                    message: "Internal Server Error",
+                });
+            }
+    }
+    //B6: Check error token(Signature,Expired...)
+    switch(error.name){
+        case authConstants.JwtMessage.TokenExpired:
+            return res.status(401).json({
+                message: "Token expired",
+            });
+        case authConstants.JwtMessage.TokenSignatureRerror:
+            return res.status(401).json({
+                message: "Token signature error",
+            });
+        default:
+            return res.status(500).json({
+                message: "Internal Server Error",
+            });
     }
   }
 }
