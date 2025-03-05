@@ -42,6 +42,16 @@ class AuthController{
             });
         }
     }
+    async renewTokenByRefreshToken(req,res){
+        try{
+            const result = await AuthService.renewTokenByRefreshToken(req);
+            return res.status(200).json(result);
+        }catch (err){
+            return res.status(500).send({
+                message:err.message,
+            });
+        }
+    }
 }
 
 module.exports = new AuthController();

@@ -63,6 +63,41 @@ class AuthMiddleware {
             });
     }
   }
+  static checkRefreshToken(req,res,next){
+    //B1: Check Cookie have refresh token
+    const refreshToken = req.cookies[authConstants.KeyCookie.RefreshToken];
+    //B2: Check refresh token
+    if(!refreshToken){
+        return res.status(401).json({
+            message: "Unauthorized",
+        });
+    }
+    //B3: Verify refresh token
+    try{
+        const infoUserByRefetchToken = TokenUtil.verifyToken({
+            token:refreshToken,
+            secret:tokenConfig.RefreshSecret,
+        });
+        req.infoUserByRefetchToken = infoUserByRefetchToken;
+        next();
+    } catch (error){
+        switch(error.name){
+            case authConstants.JwtMessage.TokenExpired:
+                return res.status(401).json({
+                    message: "Token expired",
+                });
+            case authConstants.JwtMessage.TokenSignatureRerror:
+                return res.status(401).json({
+                    message: "Token signature error",
+                });
+            default:
+                return res.status(500).json({
+                    message: "Internal Server Error",
+                });
+            }
+    }
+  }
 }
+
 
 module.exports =  AuthMiddleware;

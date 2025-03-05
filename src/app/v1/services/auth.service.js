@@ -157,6 +157,23 @@ class AuthService{
             message:"Forgot password",
         };
     }
+    async renewTokenByRefreshToken(req){
+        //B1: Get info user by refresh token
+        const {userId,email}= req.infoUserByRefetchToken;
+        
+        const accessToken = TokenUtil.generateAccessToken({
+            payload:{
+                userId,
+                email,
+            },
+            secret: tokenConfig.AccessSecret,
+        });
+        
+        return {
+            message:"Renew token successfully",
+            accessToken,
+        };
+    }
 }
 
 module.exports = new AuthService();
