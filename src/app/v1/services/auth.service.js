@@ -65,7 +65,7 @@ class AuthService{
             user = await UserModel.findOneByEmail({email:identify});
         } else if(checkTypeLogin === authConstants.LoginType.Username){
             const checkUsername = AuthValidate.isUsernameValid(identify);
-            if(checkUsername){
+            if(!checkUsername){
                 throw new Error("Invalid username");
             }
         //B4. Check email exist or not exist
