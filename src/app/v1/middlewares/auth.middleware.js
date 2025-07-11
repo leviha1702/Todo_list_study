@@ -1,4 +1,3 @@
-const { token } = require("morgan");
 const authConstants = require("../../share/constants/auth.constants");
 const TokenUtil = require("../../share/utils/token.util");
 const tokenConfig = require("../../share/configs/token.conf");
@@ -46,21 +45,6 @@ class AuthMiddleware {
                     message: "Internal Server Error",
                 });
             }
-    }
-    //B6: Check error token(Signature,Expired...)
-    switch(error.name){
-        case authConstants.JwtMessage.TokenExpired:
-            return res.status(401).json({
-                message: "Token expired",
-            });
-        case authConstants.JwtMessage.TokenSignatureRerror:
-            return res.status(401).json({
-                message: "Token signature error",
-            });
-        default:
-            return res.status(500).json({
-                message: "Internal Server Error",
-            });
     }
   }
   static checkRefreshToken(req,res,next){

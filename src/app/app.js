@@ -1,9 +1,11 @@
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const appConfig = require("./share/configs/app.conf");
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 app.use(morgan("dev"));
